@@ -6,23 +6,37 @@ import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ email: "", password: "" });
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
   const [loading, setLoading] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
-
     if (loading) return;
+
     setLoading(true);
 
     try {
       const res = await axios.post("/login", form);
 
+      const user = res.data.user; // ✅ DEFINE USER HERE
+
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("user", JSON.stringify(user));
 
       toast.success("Login successful");
-      navigate("/profile");
+
+      // ✅ ROLE BASED REDIRECT
+      if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/profile");
+      }
+
     } catch (err) {
       if (err.response?.data?.errors) {
         Object.values(err.response.data.errors)
@@ -39,13 +53,16 @@ export default function Login() {
   return (
     <Container style={{ maxWidth: 450 }} className="mt-5">
       <h3>Login</h3>
-      <Form onSubmit={submit} noValidate>
+
+      <Form onSubmit={submit}>
         <Form.Control
           className="mb-3"
           type="email"
           placeholder="Email"
           value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, email: e.target.value })
+          }
         />
 
         <Form.Control
@@ -53,7 +70,9 @@ export default function Login() {
           type="password"
           placeholder="Password"
           value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, password: e.target.value })
+          }
         />
 
         <Button type="submit" disabled={loading} className="w-100">
