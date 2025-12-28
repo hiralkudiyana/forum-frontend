@@ -4,11 +4,16 @@ import ThreadRow from "./ThreadRow";
 export default function ForumCategory({ category, index }) {
   return (
     <Accordion.Item eventKey={index.toString()}>
-      <Accordion.Header>{category.title}</Accordion.Header>
+      <Accordion.Header>{category.name}</Accordion.Header>
+
       <Accordion.Body className="p-0">
-        {category.forums.map((forum, i) => (
-          <ThreadRow key={i} forum={forum} />
-        ))}
+        {category.posts.length === 0 ? (
+          <div className="p-3 text-muted">No posts yet</div>
+        ) : (
+          category.posts.map((post) => (
+            <ThreadRow key={post.id} post={post} />
+          ))
+        )}
       </Accordion.Body>
     </Accordion.Item>
   );

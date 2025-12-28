@@ -37,7 +37,7 @@ export default function Home() {
 
       {!loading && !error && (
         <Accordion defaultActiveKey="0">
-          {categories.map((category, index) => (
+          {categories && categories.map((category, index) => (
             <ForumCategory key={index} category={category} index={index} />
           ))}
         </Accordion>

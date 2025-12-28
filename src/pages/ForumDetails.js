@@ -26,9 +26,15 @@ const dummyPosts = [
 
 export default function ForumDetails() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isBanned, setIsBanned] = useState(false);
+
     useEffect(() => {
         const token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("user"));
+
         setIsLoggedIn(!!token);
+        setIsBanned(user?.is_banned === true);
+
      }, []);
 
   return (
@@ -36,7 +42,7 @@ export default function ForumDetails() {
       <h4 className="mb-4">Anouncment</h4>
 
       {/* 🔹 Comment Section */}
-      <CommentBox isLoggedIn={isLoggedIn} />
+      <CommentBox isLoggedIn={isLoggedIn} isBanned={isBanned} />
 
       {/* 🔹 Existing Posts */}
       {dummyPosts.map((post, index) => (

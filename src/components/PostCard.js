@@ -13,11 +13,6 @@ export default function PostCard({ post }) {
               {post.user.charAt(0)}
             </div>
             <strong>{post.user}</strong>
-            <div>
-              <Badge bg="warning" className="mt-1">
-                {post.role}
-              </Badge>
-            </div>
           </Col>
 
           <Col md={10}>

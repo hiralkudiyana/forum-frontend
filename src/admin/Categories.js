@@ -3,6 +3,8 @@ import { Table, Button, Modal, Form } from "react-bootstrap";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import AdminLayout from "./AdminLayout";
 import api from "../api/api"; // axios instance
+import loader from '../Fadingcircles.gif'
+import { toast } from "react-toastify";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -19,44 +21,71 @@ const Categories = () => {
       console.error(err);
       //alert("Failed to load categories");
     }
+    finally {
+      setLoading(false);
+    }
   };
 
   // Add category
   const handleSave = async () => {
-    if (!name.trim()) {
-      alert("Category name is required");
-      return;
-    }
+  if (!name.trim()) {
+    toast.error("Category name is required");
+    return;
+  }
 
-    setLoading(true);
-    try {
-      await api.post("/admin/categories", { name });
-      setName("");
-      setShowModal(false);
-      fetchCategories(); // refresh list
-    } catch (err) {
-      console.log(err);
+  setLoading(true);
+  try {
+    await api.post("/admin/categories", { name });
 
-      //alert("Category already exists");
-    } finally {
-      setLoading(false);
+    toast.success("Category added successfully");
+
+    setName("");
+    setShowModal(false);
+    fetchCategories(); // refresh list
+  } catch (err) {
+    console.error(err);
+
+    // Laravel validation / duplicate entry handling
+    if (err.response?.status === 422) {
+      const errors = err.response.data.errors;
+      Object.values(errors).forEach(error =>
+        toast.error(error[0])
+      );
+    } else if (err.response?.status === 409) {
+      toast.error("Category already exists");
+    } else {
+      toast.error(
+        err.response?.data?.message || "Something went wrong"
+      );
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // Delete category
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this category?"))
       return;
-
     try {
+      setLoading(true);
       await api.delete(`/admin/categories/${id}`);
       setCategories(categories.filter((c) => c.id !== id));
+      toast.success("Category deleted successfully");
+
     } catch (err) {
-      alert("Failed to delete category");
+      toast.error(
+        err.response?.data?.message || "Failed to delete category"
+      );
+    }
+    finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchCategories();
   }, []);
 
@@ -83,7 +112,7 @@ const Categories = () => {
           {categories.length === 0 && (
             <tr>
               <td colSpan="3" className="text-center">
-                No categories found
+                {loading ? <img src={loader}/> : "No categories found"} 
               </td>
             </tr>
           )}
@@ -94,7 +123,7 @@ const Categories = () => {
               <td>{c.name}</td>
               <td>
                 {/* Edit later */}
-                <FaEdit className="text-primary me-3 cursor-pointer" />
+                {/* <FaEdit className="text-primary me-3 cursor-pointer" /> */}
 
                 <FaTrash
                   className="text-danger cursor-pointer"

@@ -21,11 +21,15 @@ const Sidebar = () => {
       <h4 className="mb-4 text-center">ADMIN</h4>
 
       <NavLink to="/admin/users" className="d-block mb-3 text-white text-decoration-none">
-        👤 Users
+         Users
       </NavLink>
 
       <NavLink to="/admin/categories" className="d-block mb-3 text-white text-decoration-none">
-        📂 Categories
+         Categories
+      </NavLink>
+      
+      <NavLink to="/admin/posts" className="d-block mb-3 text-white text-decoration-none">
+         Posts
       </NavLink>
 
       <div style={{ position: "absolute", bottom: 20 }}>

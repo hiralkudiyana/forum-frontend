@@ -17,6 +17,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import Users from "./admin/Users";
 import Categories from "./admin/Categories";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import AdminPosts from "./admin/AdminPosts";
 
 
 function AppRoutes() {
@@ -69,6 +70,15 @@ function AppRoutes() {
             element={
               <AdminProtectedRoute>
                 <Categories />
+              </AdminProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/posts"
+            element={
+              <AdminProtectedRoute>
+                <AdminPosts />
               </AdminProtectedRoute>
             }
           />
