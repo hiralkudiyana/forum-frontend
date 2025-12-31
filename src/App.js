@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
+import EmailVerify from "./pages/EmailVerify";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
@@ -39,7 +40,7 @@ function AppRoutes() {
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-
+            <Route path="/email-verify" element={<EmailVerify />} />
             {/* User Protected */}
             <Route
               path="/profile"

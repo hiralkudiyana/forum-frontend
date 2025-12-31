@@ -1,13 +1,23 @@
-import { Card, Button, Form, Alert } from "react-bootstrap";
-
-export default function CommentBox({ isLoggedIn,isBanned }) {
+import { Card, Button, Form, Alert, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
+export default function CommentBox({ isLoggedIn,isBanned,isloading }) {
+  if(isloading){
+    return (
+      <Card className="mb-4">
+        <Card.Body className="text-center">
+            <Spinner animation="border" />
+        </Card.Body>
+      </Card>
+    );
+  }
   if (!isLoggedIn) {
     return (
       <Card className="mb-4">
         <Card.Body className="text-center">
           <strong>
-            Please <a href="/login">Login</a> or{" "}
-            <a href="/register">Sign up</a> to add a comment.
+            Please <Link to="/login">Login</Link> or{" "}
+
+            <Link to="/register">Sign up</Link> to add a comment.
           </strong>
         </Card.Body>
       </Card>

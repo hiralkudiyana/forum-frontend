@@ -32,8 +32,9 @@ const Users = () => {
     try {
       await api.delete(`/admin/users/${id}`);
       setUsers(users.filter((user) => user.id !== id));
+      toast.success("User deleted successfully");
     } catch (error) {
-      alert("Failed to delete user");
+      toast.error("Something went wrong");
     }
   };
   
